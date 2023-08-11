@@ -31,6 +31,7 @@ MENU_ENTRY = 'Eraser Shift'
 eraser_shift_version = "2023_08_11"
 # Variables
 check_timer = 200
+print_state = False
 
 #endregion
 
@@ -45,8 +46,7 @@ class EraserShift_Extension( Extension ):
         super().__init__( parent )
     def setup( self ):
         # Variables
-        self.view = None
-        self.state = True
+        self.update = True
         self.mode = "BRUSH" # "BRUSH" "ERASER"
 
         # Brush
@@ -60,30 +60,44 @@ class EraserShift_Extension( Extension ):
         self.Timer()
     def Timer( self ):
         self.timer_pulse = QtCore.QTimer( self )
-        self.timer_pulse.timeout.connect( self.Krita_Preset )
+        self.timer_pulse.timeout.connect( self.Preset_Updater )
         self.timer_pulse.start( check_timer )
-    def Krita_Preset( self ):
-        try:
-            # Variables
-            self.view = Krita.instance().activeWindow().activeView()
-            name = self.view.currentBrushPreset().name()
-            eraser = Krita.instance().action( "erase_action" ).isChecked()
-            print_state = False
-            # Logic
-            if self.mode == "BRUSH" and self.brush_name != name:
-                self.brush_name = name
-                self.brush_preset = Application.resources( "preset" )[self.brush_name]
-                Krita.instance().action( "erase_action" ).setChecked( False )
-                print_state = True
-            elif self.mode == "ERASER" and self.eraser_name != name:
-                self.eraser_name = name
-                self.eraser_preset = Application.resources( "preset" )[self.eraser_name]
-                Krita.instance().action( "erase_action" ).setChecked( True )
-                print_state = True
-            if print_state == True:
-                QtCore.qDebug( f"Eraser Shift | mode={self.mode}, brush={self.brush_name}, eraser={self.eraser_name}" )
-        except:
-            pass
+    def Preset_Updater( self ):
+        if self.update == True:
+            try:
+                # Variables
+                view = Krita.instance().activeWindow().activeView()
+                name = view.currentBrushPreset().name()
+                eraser = Krita.instance().action( "erase_action" ).isChecked()
+                # Logic
+                if self.mode == "BRUSH" and self.brush_name != name:
+                    # Variables
+                    self.brush_name = name
+                    self.brush_preset = Application.resources( "preset" )[self.brush_name]
+                    # Update
+                    self.Eraser_State( eraser, False )
+                    self.Print_State()
+                elif self.mode == "ERASER" and self.eraser_name != name:
+                    # Variables
+                    self.eraser_name = name
+                    self.eraser_preset = Application.resources( "preset" )[self.eraser_name]
+                    # Update
+                    self.Eraser_State( eraser, True )
+                    self.Print_State()
+            except:
+                pass
+    def Mode_Display( self, mode ):
+        if mode == "BRUSH":
+            Krita.instance().activeWindow().activeView().showFloatingMessage( "Brush Mode", Krita.instance().icon( "draw-freehand" ), 1000, 0 )
+        if mode == "ERASER":
+            Krita.instance().activeWindow().activeView().showFloatingMessage( "Eraser Mode", Krita.instance().icon( "draw-eraser" ), 1000, 0 )
+    def Eraser_State( self, mode, state ):
+        if mode != state:
+            Krita.instance().action( "erase_action" ).setChecked( state )
+    def Print_State( self ):
+        if print_state == True:
+            try:QtCore.qDebug( f"Eraser Shift | mode={self.mode} | brush={self.brush_name} | eraser={self.eraser_name}" )
+            except:pass
 
     #endregion
     #region Actions ################################################################
@@ -97,32 +111,34 @@ class EraserShift_Extension( Extension ):
         action_brush = window.createAction( EXTENSION_ID + "_brush_key", "Brush", "tools/scripts/eraser_shift_menu")
         action_eraser = window.createAction( EXTENSION_ID + "_eraser_key", "Eraser", "tools/scripts/eraser_shift_menu")
         # Connect
-        action_brush.triggered.connect( self.BRUSH_KEY )
-        action_eraser.triggered.connect( self.ERASER_KEY )
+        action_brush.triggered.connect( self.BRUSH_MODE )
+        action_eraser.triggered.connect( self.ERASER_MODE )
 
     #endregion
     #region Functions ##############################################################
 
-    def BRUSH_KEY( self ):
+    def BRUSH_MODE( self ):
         # Variables
-        self.state = False
+        self.update = False
         self.mode = "BRUSH"
         # Presets
-        self.view.setCurrentBrushPreset( self.brush_preset )
+        Krita.instance().activeWindow().activeView().setCurrentBrushPreset( self.brush_preset )
         Krita.instance().action( "KritaShape/KisToolBrush" ).trigger()
         Krita.instance().action( "erase_action" ).setChecked( False )
         # Variables
-        self.state = True
+        self.update = True
+        self.Mode_Display( self.mode )
 
-    def ERASER_KEY( self ):
+    def ERASER_MODE( self ):
         # Variables
-        self.state = False
+        self.update = False
         self.mode = "ERASER"
         # Presets
-        self.view.setCurrentBrushPreset( self.eraser_preset )
+        Krita.instance().activeWindow().activeView().setCurrentBrushPreset( self.eraser_preset )
         Krita.instance().action( "KritaShape/KisToolBrush" ).trigger()
         Krita.instance().action( "erase_action" ).setChecked( True )
         # Variables
-        self.state = True
+        self.update = True
+        self.Mode_Display( self.mode )
 
     #endregion
