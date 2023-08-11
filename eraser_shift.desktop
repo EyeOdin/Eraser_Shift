@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=eraser_shift
+X-Python-2-Compatible=false
+X-Krita-Manual=eraser_shift_manual.html
+Name=Eraser Shift
+Comment=Eraser and Brush shortcuts

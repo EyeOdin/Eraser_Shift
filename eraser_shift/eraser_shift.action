@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionCollection version="2" name="Scripts">
+    <Actions category="Scripts">
+        <text>Eraser Shift</text>
+
+
+        <Action name="pykrita_eraser_shift_brush_key">
+          <text>Brush</text>
+          <shortcut>none</shortcut>
+          <isCheckable>false</isCheckable>
+        </Action>
+        <Action name="pykrita_eraser_shift_eraser_key">
+          <text>Eraser</text>
+          <shortcut>none</shortcut>
+          <isCheckable>false</isCheckable>
+        </Action>
+
+
+    </Actions>
+</ActionCollection>
