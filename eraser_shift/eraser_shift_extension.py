@@ -123,7 +123,6 @@ class EraserShift_Extension( Extension ):
         self.mode = "BRUSH"
         # Presets
         Krita.instance().activeWindow().activeView().setCurrentBrushPreset( self.brush_preset )
-        Krita.instance().action( "KritaShape/KisToolBrush" ).trigger()
         Krita.instance().action( "erase_action" ).setChecked( False )
         # Variables
         self.update = True
@@ -135,7 +134,6 @@ class EraserShift_Extension( Extension ):
         self.mode = "ERASER"
         # Presets
         Krita.instance().activeWindow().activeView().setCurrentBrushPreset( self.eraser_preset )
-        Krita.instance().action( "KritaShape/KisToolBrush" ).trigger()
         Krita.instance().action( "erase_action" ).setChecked( True )
         # Variables
         self.update = True
