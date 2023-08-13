@@ -20,7 +20,7 @@
 # Krita Modules
 from krita import *
 # PyQt5 Modules
-from PyQt5 import QtWidgets, QtCore, QtGui, uic
+# from PyQt5 import QtWidgets, QtCore, QtGui, uic
 
 #endregion
 #region Global Variables ###########################################################
@@ -48,16 +48,18 @@ class EraserShift_Extension( Extension ):
         # Variables
         self.update = True
         self.mode = "BRUSH" # "BRUSH" "ERASER"
-
         # Brush
         self.brush_name = None
         self.brush_preset = None
         # Eraser
         self.eraser_name = None
         self.eraser_preset = None
-
         # Timer
         self.Timer()
+
+    #endregion
+    #region Timer ##################################################################
+
     def Timer( self ):
         self.timer_pulse = QtCore.QTimer( self )
         self.timer_pulse.timeout.connect( self.Preset_Updater )
@@ -103,13 +105,13 @@ class EraserShift_Extension( Extension ):
     #region Actions ################################################################
 
     def createActions( self, window ):
-       # Create Menu
+        # Menu
         action_eraser_shift = window.createAction( "eraser_shift_menu", "Eraser Shift", "tools/scripts" )
         menu_eraser_shift = QtWidgets.QMenu( "eraser_shift_menu", window.qwindow() )
         action_eraser_shift.setMenu(menu_eraser_shift)
         # Create Action
-        action_brush = window.createAction( EXTENSION_ID + "_brush_key", "Brush", "tools/scripts/eraser_shift_menu")
-        action_eraser = window.createAction( EXTENSION_ID + "_eraser_key", "Eraser", "tools/scripts/eraser_shift_menu")
+        action_brush = window.createAction( EXTENSION_ID + "_brush_mode", "Brush", "tools/scripts/eraser_shift_menu")
+        action_eraser = window.createAction( EXTENSION_ID + "_eraser_mode", "Eraser", "tools/scripts/eraser_shift_menu")
         # Connect
         action_brush.triggered.connect( self.BRUSH_MODE )
         action_eraser.triggered.connect( self.ERASER_MODE )
@@ -127,7 +129,6 @@ class EraserShift_Extension( Extension ):
         # Variables
         self.update = True
         self.Mode_Display( self.mode )
-
     def ERASER_MODE( self ):
         # Variables
         self.update = False
