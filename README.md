@@ -11,7 +11,7 @@ Eraser Shift is a Krita plugin for Eraser and Brush shortcuts.
 * Swap mode to select last preset of that mode
 * Compatiable with current krita eraser
 * Brush and Eraser mode behaviour comparable to other softwares
-* Read ![wiki](https://github.com/EyeOdin/imagine_board/wiki) for more information
+* Read ![wiki](https://github.com/EyeOdin/Eraser_Shift/wiki) for more information
 
 
 ## Preview
