@@ -3,13 +3,12 @@
     <Actions category="Scripts">
         <text>Eraser Shift</text>
 
-
-        <Action name="pykrita_eraser_shift_brush_key">
+        <Action name="pykrita_eraser_shift_brush_mode">
           <text>Brush</text>
           <shortcut>none</shortcut>
           <isCheckable>false</isCheckable>
         </Action>
-        <Action name="pykrita_eraser_shift_eraser_key">
+        <Action name="pykrita_eraser_shift_eraser_mode">
           <text>Eraser</text>
           <shortcut>none</shortcut>
           <isCheckable>false</isCheckable>

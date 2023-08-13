@@ -65,8 +65,8 @@ class EraserShift_Extension( Extension ):
         self.timer_pulse.timeout.connect( self.Preset_Updater )
         self.timer_pulse.start( check_timer )
     def Preset_Updater( self ):
-        if self.update == True:
-            try:
+        try:
+            if self.update == True:
                 # Variables
                 view = Krita.instance().activeWindow().activeView()
                 name = view.currentBrushPreset().name()
@@ -86,8 +86,8 @@ class EraserShift_Extension( Extension ):
                     # Update
                     self.Eraser_State( eraser, True )
                     self.Print_State()
-            except:
-                pass
+        except:
+            pass
     def Mode_Display( self, mode ):
         if mode == "BRUSH":
             Krita.instance().activeWindow().activeView().showFloatingMessage( "Brush Mode", Krita.instance().icon( "draw-freehand" ), 1000, 0 )
